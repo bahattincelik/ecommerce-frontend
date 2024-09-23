@@ -11,12 +11,13 @@ import ProductList from "./components/ProductList";
 function App() {
   return (
     <Router>
-      <NavBar/>
-    <Routes>
-      <Route path="/" element={<Home />} />
+        <NavBar/>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<ProductList/>} />
       </Routes>
       <Footer/>
-      </Router>
+    </Router>
   );
 }
 
