@@ -1,0 +1,32 @@
+.home-page {
+    padding: 1rem;
+}
+
+.slider {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 400px;
+    margin-bottom: 2rem;
+}
+
+.slide {
+    min-width: 100%;
+    transition: all 0.5s ease-in-out;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.top-products {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.top-products h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}

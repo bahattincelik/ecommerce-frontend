@@ -19,13 +19,14 @@ const ProductList = () => {
 
   return (
     <div className="product-list">
-      <h1>ProductList</h1>
+      {/* <h1>ProductList</h1> */}
+
       {products.map((product) => (
         <div className="product-card" key={product.id}>
           <img src={product.imageUrl || 'https://via.placeholder.com/250'} alt={product.name} className="product-image" />
           <h2>{product.name}</h2>
           <p>{product.description}</p>
-          <p className="price">Price: {product.price} ₺</p>
+          <p className="price">Price: {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price)} </p>
           <button className="add-to-cart">Add to Cart</button>
         </div>
       ))}
