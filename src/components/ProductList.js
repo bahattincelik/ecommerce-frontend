@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './ProductList.css';
+import { CartContext } from '../context/CartContext';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    // API'den ürünleri çekme
     axios.get('http://localhost:8080/api/products')
       .then((response) => {
         console.log('Products:', response.data);
@@ -19,15 +20,13 @@ const ProductList = () => {
 
   return (
     <div className="product-list">
-      {/* <h1>ProductList</h1> */}
-
-      {products.map((product) => (
-        <div className="product-card" key={product.id}>
+      {products.map((product, index) => (
+        <div className="product-card" key={product.id || index}>
           <img src={product.imageUrl || 'https://via.placeholder.com/250'} alt={product.name} className="product-image" />
           <h2>{product.name}</h2>
           <p>{product.description}</p>
           <p className="price">Price: {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price)} </p>
-          <button className="add-to-cart">Add to Cart</button>
+          <button className="add-to-cart" onClick={() => addToCart(product)}>Add to Cart</button>
         </div>
       ))}
     </div>
