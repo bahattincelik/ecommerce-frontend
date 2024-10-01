@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from './../firebase';
 
@@ -7,10 +7,11 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [userId, setUserId] = useState(null);
-  const [initialLoad, setInitialLoad] = useState(true); // İlk yükleme durumu kontrolü
+  const [initialLoad, setInitialLoad] = useState(true);
 
-  // Kullanıcı kimliğini izlemek için `useEffect`
+  // Kullanıcı kimliğini dinleyen `useEffect`
   useEffect(() => {
+    console.log("Auth state change triggered");
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUserId(user.uid);
@@ -23,12 +24,15 @@ export const CartProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // Dinamik Firestore referansı
   const userCartRef = userId ? doc(db, 'carts', userId) : null;
 
+
+
+
+
   // Sepeti Firebase'e kaydetme fonksiyonu
-  const saveCartToFirebase = async () => {
-    if (!userCartRef || initialLoad) return; // Eğer kullanıcı yoksa veya ilk yükleme ise işlem yapma
+  const saveCartToFirebase = useCallback(async () => {
+    if (!userCartRef || initialLoad) return; // İlk yükleme sırasında kaydetme işlemi yapma
     try {
       console.log("Saving cart to Firebase for user:", userId, "with items:", cartItems);
       await setDoc(userCartRef, { items: cartItems }, { merge: true });
@@ -36,11 +40,15 @@ export const CartProvider = ({ children }) => {
     } catch (error) {
       console.error("Error saving cart to Firebase: ", error);
     }
-  };
+  }, [userCartRef, cartItems, userId, initialLoad]); // Buraya `initialLoad` eklendi.
+
+
+
+
 
   // Sepeti Firebase'den yükleme fonksiyonu
-  const loadCartFromFirebase = async () => {
-    if (!userCartRef) return; // Eğer kullanıcı yoksa işlem yapma
+  const loadCartFromFirebase = useCallback(async () => {
+    if (!userCartRef || !initialLoad) return; // Eğer kullanıcı yoksa veya ilk yükleme tamamlandıysa işlem yapma
     try {
       console.log("Loading cart from Firebase for user:", userId);
       const cartSnapshot = await getDoc(userCartRef);
@@ -48,13 +56,44 @@ export const CartProvider = ({ children }) => {
         console.log("Cart data from Firebase for user:", userId, cartSnapshot.data().items);
         setCartItems(cartSnapshot.data().items || []);
       }
-      setInitialLoad(false); // İlk yükleme tamamlandıktan sonra `initialLoad` false yap.
+      setInitialLoad(false); // İlk yükleme tamamlandıktan sonra `initialLoad` false yap
     } catch (error) {
       console.error("Error loading cart from Firebase: ", error);
     }
-  };
+  }, [userCartRef, userId, initialLoad]); // Buraya `initialLoad` eklendi.
 
-  // `cartItems`'ı güncelleme işlemi
+
+
+
+
+
+  // `userId` değiştiğinde yalnızca `loadCartFromFirebase` fonksiyonunu çağır
+  useEffect(() => {
+    if (userId && initialLoad) {
+      console.log("Triggering loadCartFromFirebase for userId change.");
+      loadCartFromFirebase();
+    }
+  }, [userId, initialLoad, loadCartFromFirebase]);
+
+
+
+
+
+
+  // `cartItems` her değiştiğinde `saveCartToFirebase` fonksiyonunu çağır (ilk yükleme kontrolü ile)
+  useEffect(() => {
+    if (!initialLoad) {
+      console.log("Triggering saveCartToFirebase after cartItems change.");
+      saveCartToFirebase();
+    }
+  }, [cartItems, saveCartToFirebase, initialLoad]);
+
+
+
+
+
+
+  // Sepete ürün ekleme fonksiyonu
   const addToCart = (product) => {
     setCartItems((prevItems) => {
       const existingProductIndex = prevItems.findIndex((item) => item.id === product.id);
@@ -69,23 +108,33 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+
+
+
+  // Sepetten ürün çıkarmak fonksiyonu
   const removeFromCart = (id) => {
     console.log("Removing item from cart:", id);
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
+
+
+  // Sepetten ürün güncellemek fonksiyonu
   const updateCartItem = (id, updatedProduct) => {
     console.log("Updating item in cart:", id);
     setCartItems(cartItems.map((item) => (item.id === id ? updatedProduct : item)));
   };
 
+
+
+  // Sepeti boşaltmak fonksiyonu
   const clearCart = () => {
     console.log("Clearing cart.");
     setCartItems([]);
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateCartItem, clearCart, saveCartToFirebase, loadCartFromFirebase }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateCartItem, clearCart, saveCartToFirebase, loadCartFromFirebase,userId }}>
       {children}
     </CartContext.Provider>
   );

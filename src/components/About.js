@@ -6,7 +6,7 @@ const About = () => {
         <div className="about-page">
             <h1>About Us</h1>
             <div className="about-content">
-                <img src="http://via.placeholder.com/600x400" alt="About Us" />
+                <img src="https://via.placeholder.com/600x400" alt="About Us" />
                 <div className="about-text">
                     <p>
                         We are a leading e-commerce company with a passion for providing the best products and services to our customers.

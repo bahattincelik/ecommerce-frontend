@@ -24,7 +24,7 @@ const NavBar = () => {
                 <li><a href="/register">Register</a></li>
             </div>
             <div className="navbar-links">
-            <li><a href="/cart">Waren</a></li>
+            <li><a href="/cart">Cart</a></li>
 
             </div>
             <div className="navbar-account">

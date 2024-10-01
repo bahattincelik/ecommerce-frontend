@@ -7,13 +7,13 @@ const Home = () => {
         <div className="home-page">
             <div className="slider">
                 <div className="slide">
-                    <img src="http://via.placeholder.com/1200x400" alt="Slider 1" />
+                    <img src="https://via.placeholder.com/1200x400" alt="Slider 1" />
                 </div>
                 <div className="slide">
-                    <img src="http://via.placeholder.com/1200x400" alt="Slider 2" />
+                    <img src="https://via.placeholder.com/1200x400" alt="Slider 2" />
                 </div>
                 <div className="slide">
-                    <img src="http://via.placeholder.com/1200x400" alt="Slider 3" />
+                    <img src="https://via.placeholder.com/1200x400" alt="Slider 3" />
                 </div>
             </div>
             <div className="top-products">

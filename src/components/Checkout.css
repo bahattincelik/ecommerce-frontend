@@ -1,0 +1,34 @@
+.checkout-page{
+    padding: 2rem;
+    text-align: center;
+}
+
+.checkot-details {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 5px;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.checkot-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+.checkot-details li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+.place-order-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 1rem 2 rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+.place-order-btn:hover{
+    background-color: #45a049;
+}
