@@ -8,7 +8,7 @@ const ProductList = () => {
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    axios.get('https://localhost:8080/api/products')
+    axios.get('http://localhost:8080/api/products')
       .then((response) => {
         console.log('Products:', response.data);
         setProducts(response.data);

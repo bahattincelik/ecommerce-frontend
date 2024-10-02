@@ -1,18 +1,23 @@
 .home-page {
     padding: 1rem;
+    text-align: center;
 }
 
 .slider {
     display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
-    width: 100%;
+    width: 100%;  /* Tam genişlik */
     height: 400px;
-    margin-bottom: 2rem;
+    margin: 0 auto;
 }
 
 .slide {
     min-width: 100%;
     transition: all 0.5s ease-in-out;
+    align-items: center;
+    box-sizing: border-box;
 }
 
 .slide img {
@@ -29,4 +34,13 @@
 .top-products h2 {
     font-size: 2rem;
     margin-bottom: 2rem;
+    margin-top: 50px;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
 }
